@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom'
+import API from '@aws-amplify/api'
+import { createRoom as createRoomMutation } from './graphql/mutations'
 
 const initialState = {
   roomName: null,
@@ -14,21 +16,21 @@ function CreateRoom() {
     setState((currentState) => ({ ...currentState, [name]: value }))
   }
 
-  function createNewRoom() {
+  async function createNewRoom() {
     try {
       const { roomName } = state
-      //const pollId = slugify(pollName)
 
-      //const pollData = { id: pollId, itemType: "Poll", type: pollType, name: pollName }
-      const roomData = { id: roomName, lastUpdated: Date.now()}
+      const roomData = { id: roomName, lastUpdated: Date.now() }
 
-      // const createPollPromise = API.graphql({ query: createPollMutation, variables: { input: pollData } })
-      const createRoom = API.graphql({ query: createNewRoom, variables: { input: roomData }})
+      const createRoom = API.graphql({
+        query: createRoomMutation,
+        variables: { input: roomData },
+      })
       await Promise.all([createRoom])
 
-      const url = `/poll/${pollId}`
+      const url = `/room/${roomName}`
       history.push(url)
-    } catch(err) {
+    } catch (err) {
       console.log('error: ', err)
     }
   }

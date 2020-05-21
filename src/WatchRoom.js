@@ -1,4 +1,4 @@
-// import React, { useReducer, useEffect } from 'react'
+import React, { useReducer, useEffect } from 'react'
 // import { useParams } from 'react-router-dom'
 // import API from '@aws-amplify/api'
 
@@ -26,7 +26,7 @@
 // }
 
 // function WatchRoom() {
-//   let params = useParams()
+// let params = useParams()
 //   const [state, dispatch] = useReducer(reducer, initialState)
 //   let subscription
 
@@ -74,3 +74,4 @@
 // }
 
 // export default WatchRoom
+export default () => <div>I watch Room </div>
