@@ -1,0 +1,22 @@
+type AudienceMember
+  @model
+  @key(
+    name: "byRoomName"
+    fields: ["roomName"]
+    queryField: "itemsByRoomName"
+  ) {
+  id: ID!
+  emotion: String!
+  roomName: String!
+}
+
+type Subscription {
+  onUpdateById(id: ID!): AudienceMember
+    @aws_subscribe(mutations: ["updateAudienceMember"])
+  onUpdateByRoomId(id: ID!): Room @aws_subscribe(mutations: ["updateRoom"])
+}
+
+type Room @model {
+  id: ID!
+  lastUpdated: String!
+}

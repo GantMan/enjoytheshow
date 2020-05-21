@@ -1,0 +1,15 @@
+{
+    "prod": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-facefun-prod-142657-authRole",
+            "UnauthRoleArn": "arn:aws:iam::119079881983:role/amplify-facefun-prod-142657-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::119079881983:role/amplify-facefun-prod-142657-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-facefun-prod-142657-deployment",
+            "UnauthRoleName": "amplify-facefun-prod-142657-unauthRole",
+            "StackName": "amplify-facefun-prod-142657",
+            "StackId": "arn:aws:cloudformation:us-east-1:119079881983:stack/amplify-facefun-prod-142657/1099e8e0-88bd-11ea-9318-0e5e10b6c293",
+            "AmplifyAppId": "d4239lfvqlkgp"
+        }
+    }
+}
