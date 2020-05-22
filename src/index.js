@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import Router from './Router'
 import * as serviceWorker from './serviceWorker'
+import Amplify from '@aws-amplify/core'
+import config from './aws-exports'
+Amplify.configure(config)
 
 ReactDOM.render(
   <React.StrictMode>
