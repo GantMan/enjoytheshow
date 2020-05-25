@@ -17,7 +17,11 @@ function App() {
         <JoinRoom />
       </section>
       <div>
-        <img className="flourish" src="./flourish.svg" />
+        <img
+          className="flourish"
+          src="./flourish.svg"
+          alt="beautiful flourish"
+        />
         <a id="explainer">
           <h2 className="explainer">Enjoying The Show</h2>
         </a>

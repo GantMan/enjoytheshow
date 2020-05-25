@@ -29,13 +29,19 @@ h2 {
   margin: 0;
 }
 
-.createRoom {
+.disabled,
+.disabled:hover {
+  background: #4d4d4d;
+}
+
+.roomBox {
   display: flex;
   flex-direction: column;
 }
 
-.createRoom img {
+.roomBox img {
   width: 130px;
+  min-height: 130px;
 }
 
 .App {
@@ -114,7 +120,7 @@ h2 {
 }
 
 button {
-  background: #9d0000;
+  background: #ee0048;
   transition: background ease 0.25s;
   border-radius: 5px;
   display: inline-block;
@@ -131,7 +137,7 @@ button {
   -moz-appearance: none;
 }
 button:hover {
-  background: #ee0048;
+  background: #ff2566;
 }
 button:focus {
   outline: 1px solid #fff;
