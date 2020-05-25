@@ -4,7 +4,9 @@ function Footer() {
   return (
     <div class="footer">
       <div>
-        <p>Copyright (Now) Infinite Red</p>
+        <p>
+          Copyright (Now) <a href="https://infnite.red">Infinite Red</a>
+        </p>
       </div>
 
       <img
@@ -13,7 +15,12 @@ function Footer() {
         alt="comedy and tragedy masks footer"
       />
       <div>
-        <p>Created by Gant Laborde</p>
+        <p>
+          Created by{" "}
+          <a href="https://gantlaborde" target="_blank">
+            Gant Laborde
+          </a>
+        </p>
       </div>
     </div>
   );
