@@ -38,8 +38,8 @@ function CreateRoom() {
   return (
     <div className="createRoom">
       <div className="titleSection">
-        <img src="/mask.svg" />
-        <h2>Watch a Room</h2>
+        <img src="/stage.svg" />
+        <h2>Join a Room</h2>
       </div>
 
       <div class="form__group field">

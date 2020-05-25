@@ -4,6 +4,40 @@ html {
   font-family: "Roboto Condensed", sans-serif;
 }
 
+h2 {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 2em;
+}
+
+.navigateRooms {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 2.5em 0;
+}
+
+.explainer {
+  font-size: 3em;
+  margin: -69px 0 0 0;
+}
+
+.flourish {
+  width: 40%;
+  padding: 3em 0;
+}
+
+.titleSection h2 {
+  margin: 0;
+}
+
+.createRoom {
+  display: flex;
+  flex-direction: column;
+}
+
+.createRoom img {
+  width: 130px;
+}
+
 .App {
   text-align: center;
 }
@@ -31,7 +65,7 @@ html {
 }
 
 .App-link {
-  color: #61dafb;
+  color: #ee0048;
 }
 
 @keyframes App-logo-spin {
@@ -119,4 +153,67 @@ button:focus {
   position: fixed;
   background-color: rgba(157, 34, 34, 0.7);
   color: white;
+}
+
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+  margin: 0 0 10px;
+}
+
+.form__field {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid #9b9b9b;
+  outline: 0;
+  font-size: 1.3rem;
+  color: #fff;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+
+.form__field::placeholder {
+  color: transparent;
+}
+
+.form__field:placeholder-shown ~ .form__label {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 20px;
+}
+
+.form__field:focus ~ .form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #ee0048;
+  font-weight: 700;
+}
+
+.form__field:focus {
+  padding-bottom: 6px;
+  font-weight: 700;
+  border-width: 3px;
+  border-image: linear-gradient(to right, #ee0048, #a00c0c);
+  border-image-slice: 1;
+}
+.form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #9b9b9b;
+  font-weight: 700;
+  z-index: -1;
+}
+/* reset input */
+
+.form__field:required,
+.form__field:invalid {
+  box-shadow: none;
 }
