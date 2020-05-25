@@ -37,6 +37,7 @@ h2 {
 .roomBox {
   display: flex;
   flex-direction: column;
+  width: 30%;
 }
 
 .roomBox img {
@@ -222,4 +223,21 @@ button:focus {
 .form__field:required,
 .form__field:invalid {
   box-shadow: none;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-around;
+  background-color: black;
+  height: 60px;
+  margin-top: 150px;
+  bottom: 0;
+  position: relative;
+  width: 100%;
+}
+
+.footerImage {
+  position: relative;
+  height: 120px;
+  top: -60px;
 }
