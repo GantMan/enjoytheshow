@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <div class="footer">
+    <div className="footer">
       <div>
         <p>
           Copyright (Now) <a href="https://infnite.red">Infinite Red</a>
@@ -11,7 +11,7 @@ function Footer() {
 
       <img
         className="footerImage"
-        src="./masks.png"
+        src="/masks.png"
         alt="comedy and tragedy masks footer"
       />
       <div>

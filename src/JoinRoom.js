@@ -35,16 +35,16 @@ function CreateRoom() {
         <h2>Join a Room</h2>
       </div>
 
-      <div class="form__group field">
+      <div className="form__group field">
         <input
           placeholder="Room Name"
           name="roomName"
           required
           onChange={onChangeText}
           autoComplete="off"
-          class="form__field"
+          className="form__field"
         />
-        <label for="roomName" class="form__label">
+        <label htmlFor="roomName" className="form__label">
           Room Name
         </label>
       </div>

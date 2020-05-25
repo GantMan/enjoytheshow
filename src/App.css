@@ -268,3 +268,46 @@ button:focus {
   font-size: 0.85em;
   color: #9b9b9b;
 }
+
+.crazyGrads {
+  background: linear-gradient(180deg, #1d0000, #490606);
+  background-size: 400% 400%;
+
+  -webkit-animation: gradientPulse 16s ease infinite;
+  -moz-animation: gradientPulse 16s ease infinite;
+  animation: gradientPulse 16s ease infinite;
+}
+
+@-webkit-keyframes gradientPulse {
+  0% {
+    background-position: 51% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 51% 0%;
+  }
+}
+@-moz-keyframes gradientPulse {
+  0% {
+    background-position: 51% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 51% 0%;
+  }
+}
+@keyframes gradientPulse {
+  0% {
+    background-position: 51% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 51% 0%;
+  }
+}
