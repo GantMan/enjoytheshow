@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function Header() {
-  return <div>I am Header</div>
+  return <div className="page-head">I am Header</div>;
 }
 
-export default Header
+export default Header;

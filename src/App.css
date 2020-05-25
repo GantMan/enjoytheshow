@@ -1,3 +1,9 @@
+html {
+  background-color: #1d0000;
+  color: #fff;
+  font-family: "Roboto Condensed", sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -35,4 +41,82 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.masthead {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  height: 50vh; /* if you don't want it to take up the full screen, reduce this number */
+  overflow: hidden;
+  padding-bottom: 10vh;
+  background-size: cover !important;
+  background: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 35%,
+      rgba(0, 0, 0, 0.65) 100%
+    ),
+    url(ets3.jpg) no-repeat center center scroll;
+}
+
+.masthead h1 {
+  font-style: normal;
+  font-weight: bold;
+  color: #fff;
+  font-size: 11vmin;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.8);
+  margin-bottom: 9px;
+  animation: glowy 1600ms ease-out infinite alternate;
+  font-family: "Montserrat", sans-serif;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: rgba(157, 34, 34, 0.7);
+  padding-bottom: 0.2em;
+}
+
+button {
+  background: #9d0000;
+  transition: background ease 0.25s;
+  border-radius: 5px;
+  display: inline-block;
+  /* border: none; */
+  /* border: 2px solid; */
+  padding: 0.75rem 1.5rem;
+  margin: 0;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  text-align: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+button:hover {
+  background: #ee0048;
+}
+button:focus {
+  outline: 1px solid #fff;
+  outline-offset: -4px;
+}
+
+@keyframes glowy {
+  0% {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #a86969,
+      0 0 40px #a00c0c, 0 0 50px #a00c0c, 0 0 60px #a00c0c, 0 0 70px #a00c0c;
+  }
+  100% {
+    text-shadow: 0 0 0px #fff, 0 0 20px #fff, 0 0 20px #a00c0c, 0 0 40px #a00c0c,
+      0 0 50px #a00c0c, 0 0 60px #a00c0c, 0 0 70px #a00c0c;
+  }
+}
+
+.page-head {
+  position: fixed;
+  background-color: rgba(157, 34, 34, 0.7);
+  color: white;
 }
