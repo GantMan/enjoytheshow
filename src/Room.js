@@ -1,168 +1,138 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import {
   createAudienceMember,
   updateAudienceMember,
   updateRoom,
-} from "./graphql/mutations";
-import API from "@aws-amplify/api";
-import * as faceapi from "face-api.js";
+} from './graphql/mutations'
+import API from '@aws-amplify/api'
+import * as faceapi from 'face-api.js'
 
-const minConfidence = 0.5;
-const faceBoundaries = true;
-const videoRef = React.createRef();
-const canvasRef = React.createRef();
-
-const getFaceStats = (emotions) => {
-  const fCount = emotions.reduce(
-    (prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev),
-    {
-      neutral: 0,
-      happy: 0,
-      sad: 0,
-      fearful: 0,
-      angry: 0,
-      disgusted: 0,
-      surprised: 0,
-    }
-  );
-
-  const chart = [
-    { x: "Happy", y: fCount.happy },
-    { x: "Neutral", y: fCount.neutral },
-    { x: "Surprised", y: fCount.surprised },
-    { x: "Sad", y: fCount.sad },
-    { x: "Fearful", y: fCount.fearful },
-    { x: "Disgusted", y: fCount.disgusted },
-    { x: "Angry", y: fCount.angry },
-  ];
-  const good = fCount.happy + fCount.neutral + fCount.surprised;
-  const bad = fCount.sad + fCount.fearful + fCount.angry + fCount.disgusted;
-  return { chart, good, bad, total: emotions.length };
-};
+const minConfidence = 0.5
+const faceBoundaries = true
+const videoRef = React.createRef()
+const canvasRef = React.createRef()
 
 function Room() {
-  const [faces, setFaces] = useState({});
-  const [person, setPerson] = useState();
-  let params = useParams();
+  const [faces, setFaces] = useState()
+  const [person, setPerson] = useState()
+  let params = useParams()
 
   const loadModelsAndAll = async () => {
     // Load all needed models
-    await faceapi.nets.ssdMobilenetv1.loadFromUri("/");
-    await faceapi.loadFaceLandmarkModel("/");
-    await faceapi.loadFaceExpressionModel("/");
+    await faceapi.nets.ssdMobilenetv1.loadFromUri('/')
+    await faceapi.loadFaceLandmarkModel('/')
+    await faceapi.loadFaceExpressionModel('/')
     // get webcam running
-    let stream;
+    let stream
     try {
       stream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
-          facingMode: "user",
+          facingMode: 'user',
         },
-      });
+      })
     } catch (err) {
       alert(
         "Sorry - Your Browser isn't allowing access to your webcam.  Try a different browser for this device?"
-      );
-      console.error("getUserMedia error", err);
+      )
+      console.error('getUserMedia error', err)
     }
-    videoRef.current.srcObject = stream;
+    videoRef.current.srcObject = stream
     // hold until the camera loads
     return new Promise((resolve, _) => {
       videoRef.current.onloadedmetadata = () => {
         // Kick off right away
-        detectFaceStuff();
-        resolve();
-      };
-    });
-  };
+        detectFaceStuff()
+        resolve()
+      }
+    })
+  }
 
   const detectFaceStuff = async () => {
-    const videoEl = videoRef.current;
-    const canvas = canvasRef.current;
+    const videoEl = videoRef.current
+    const canvas = canvasRef.current
     const result = await faceapi
       .detectAllFaces(
         videoEl,
         new faceapi.SsdMobilenetv1Options({ minConfidence })
       )
-      .withFaceExpressions();
+      .withFaceExpressions()
     if (result && result.length > 0) {
       // Go turn all faces over minConfidence into strings
-      const facialExpressions = result.map((r) => {
-        if (r.detection.score > minConfidence)
-          return Object.keys(r.expressions).reduce((a, b) =>
-            r.expressions[a] > r.expressions[b] ? a : b
-          );
-      });
+      const facialExpressions = result
+        .map((r) => {
+          if (r.detection.score > minConfidence)
+            return Object.keys(r.expressions).reduce((a, b) =>
+              r.expressions[a] > r.expressions[b] ? a : b
+            )
+        })
+        .toString()
 
-      // Update numerical results
-      const faceStats = getFaceStats(facialExpressions);
-      setFaces(faceStats);
+      // A person has been setup
+      // DON'T YOU JUDGE ME FOR USING GLOBALS!
+      if (facialExpressions !== window.faces) {
+        // console.log(
+        //   `facialExpressions changed from ${window.faces} to ${facialExpressions} `
+        // )
+        // store local
+        window.faces = facialExpressions
+        setFaces(facialExpressions)
+        // send to server
+        setEmotion(facialExpressions)
+      }
 
       // Display visual results
       if (faceBoundaries) {
-        canvas.style.visibility = "visible";
-        const dims = faceapi.matchDimensions(canvas, videoEl, true);
-        const resizedResult = faceapi.resizeResults(result, dims);
-        faceapi.draw.drawDetections(canvas, resizedResult);
-        faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence);
+        canvas.style.visibility = 'visible'
+        const dims = faceapi.matchDimensions(canvas, videoEl, true)
+        const resizedResult = faceapi.resizeResults(result, dims)
+        faceapi.draw.drawDetections(canvas, resizedResult)
+        faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence)
       } else {
-        canvas.style.visibility = "hidden";
+        canvas.style.visibility = 'hidden'
       }
     }
 
     requestAnimationFrame(() => {
       // calm down when hidden!
       if (canvasRef.current) {
-        detectFaceStuff();
+        detectFaceStuff()
       }
-    });
-  };
+    })
+  }
 
-  async function createPerson() {
-    const person = await API.graphql({
+  async function createPerson(startEmotion = 'Neutral') {
+    const personResult = await API.graphql({
       query: createAudienceMember,
-      variables: { input: { emotion: "neutral", roomName: params.id } },
-    });
+      variables: { input: { emotion: startEmotion, roomName: params.id } },
+    })
 
-    setPerson(person.data.createAudienceMember.id);
-    // console.log("See that person data", person);
+    setPerson(personResult.data.createAudienceMember.id)
+    // console.log('See that person data', personResult)
   }
 
-  async function setSad() {
-    console.log("person", person);
+  async function setEmotion(emotion) {
     await API.graphql({
       query: updateAudienceMember,
-      variables: { input: { id: person, emotion: "sad" } },
-    });
+      variables: { input: { id: person, emotion } },
+    })
 
     API.graphql({
       query: updateRoom,
       variables: {
         input: { id: params.id, lastUpdated: Date.now().toString() },
       },
-    });
-  }
-
-  async function setHappy() {
-    await API.graphql({
-      query: updateAudienceMember,
-      variables: {
-        input: { id: person, emotion: "happy" },
-      },
-    });
-
-    API.graphql({
-      query: updateRoom,
-      variables: {
-        input: { id: params.id, lastUpdated: Date.now().toString() },
-      },
-    });
+    })
   }
 
   useEffect(() => {
-    loadModelsAndAll();
-  }, []);
+    if (person) {
+      loadModelsAndAll()
+    } else {
+      createPerson()
+    }
+  }, [person])
 
   return (
     <div>
@@ -207,14 +177,8 @@ function Room() {
           project, <a href="/">visit the main page</a>.
         </p>
       </section>
-      <div>
-        <button onClick={createPerson}>Create Person X</button>
-        <hr />
-        <button onClick={setSad}>Sad</button>
-        <button onClick={setHappy}>Happy</button>
-      </div>
     </div>
-  );
+  )
 }
 
-export default Room;
+export default Room
