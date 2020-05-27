@@ -126,7 +126,7 @@ function Room() {
     });
 
     setPerson(person.data.createAudienceMember.id);
-    // console.log("HEYYY", person);
+    // console.log("See that person data", person);
   }
 
   async function setSad() {
@@ -172,13 +172,13 @@ function Room() {
           src="/flourish.svg"
           alt="beautiful flourish"
         />
-
         <h2 className="explainer">
           Room
           <br />
           {params.id}
         </h2>
       </section>
+      <h3 className="centerme">Smile for the Camera</h3>
       <section>
         <div id="captureContainer">
           <video
@@ -191,6 +191,21 @@ function Room() {
           ></video>
           <canvas id="overlay" ref={canvasRef} className="captureBox" />
         </div>
+      </section>
+      <hr />
+      <section id="explainerSection">
+        <img src="/staff.svg" id="explainerHeaderImage" />
+        <h2>What is this page?</h2>
+        <p>
+          Your camera is attempting to identify your current emotional state
+          from your facial expression. The most dominant emotional state is then
+          combined and sent off for real time tracking with everyone else who's
+          also in this unique room.
+        </p>
+        <p>
+          If you'd like to create your own room or understand more about this
+          project, <a href="/">visit the main page</a>.
+        </p>
       </section>
       <div>
         <button onClick={createPerson}>Create Person X</button>
