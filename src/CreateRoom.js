@@ -12,6 +12,15 @@ function CreateRoom() {
   const [state, setState] = useState(initialState)
   const history = useHistory()
 
+  function handleKey(e) {
+    // future proof?
+    const enterPressed = e.key ? e.key === 'Enter' : e.keyCode === 13
+
+    if (enterPressed) {
+      createNewRoom()
+    }
+  }
+
   function onChangeText(e) {
     const { name, value } = e.target
     setState((currentState) => ({ ...currentState, [name]: value }))
@@ -52,6 +61,7 @@ function CreateRoom() {
           onChange={onChangeText}
           autoComplete="off"
           className="form__field"
+          onKeyUp={handleKey}
         />
         <label htmlFor="roomName" className="form__label">
           Room Name
