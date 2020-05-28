@@ -1,44 +1,44 @@
-import React, { useReducer, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import API from "@aws-amplify/api";
-import { onUpdateByRoomId } from "./graphql/subscriptions";
-import { itemsByRoomName } from "./graphql/queries";
+import React, { useReducer, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import API from '@aws-amplify/api'
+import { onUpdateByRoomId } from './graphql/subscriptions'
+import { itemsByRoomName } from './graphql/queries'
 
 const initialState = {
   loading: true,
   roomEmotions: [],
-};
+}
 
 function reducer(state, action) {
   switch (action.type) {
-    case "SET_ROOM_EMOTIONS":
+    case 'SET_ROOM_EMOTIONS':
       return {
         ...state,
         roomEmotions: action.roomEmotions,
         loading: false,
-      };
-    case "SET_LOADING":
+      }
+    case 'SET_LOADING':
       return {
         ...state,
         loading: action.loading,
-      };
+      }
     default:
-      return state;
+      return state
   }
 }
 
 function WatchRoom() {
-  let params = useParams();
-  const [state, dispatch] = useReducer(reducer, initialState);
-  let subscription;
+  let params = useParams()
+  const [state, dispatch] = useReducer(reducer, initialState)
+  let subscription
 
   useEffect(() => {
-    fetchRoomEmotions();
-    subscribe();
+    fetchRoomEmotions()
+    subscribe()
     return () => {
-      subscription && subscription.unsubscribe();
-    };
-  }, []);
+      subscription && subscription.unsubscribe()
+    }
+  }, [])
 
   async function fetchRoomEmotions() {
     let {
@@ -48,10 +48,9 @@ function WatchRoom() {
     } = await API.graphql({
       query: itemsByRoomName,
       variables: { roomName: params.id },
-    });
+    })
     // console.log("roomItems", roomItems);
-    dispatch({ type: "SET_ROOM_EMOTIONS", roomEmotions: roomItems });
-    subscribe();
+    dispatch({ type: 'SET_ROOM_EMOTIONS', roomEmotions: roomItems })
   }
 
   function subscribe() {
@@ -60,9 +59,9 @@ function WatchRoom() {
       variables: { id: params.id },
     }).subscribe({
       next: (apiData) => {
-        fetchRoomEmotions();
+        fetchRoomEmotions()
       },
-    });
+    })
   }
 
   return (
@@ -70,7 +69,7 @@ function WatchRoom() {
       <p>I watch Room - {params.id}</p>
       <p>{JSON.stringify(state.roomEmotions)}</p>
     </div>
-  );
+  )
 }
 
-export default WatchRoom;
+export default WatchRoom

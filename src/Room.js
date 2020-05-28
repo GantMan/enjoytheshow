@@ -1,66 +1,67 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import {
   createAudienceMember,
   updateAudienceMember,
+  createRoom,
   updateRoom,
   deleteAudienceMember,
-} from "./graphql/mutations";
-import API from "@aws-amplify/api";
-import * as faceapi from "face-api.js";
+} from './graphql/mutations'
+import API from '@aws-amplify/api'
+import * as faceapi from 'face-api.js'
 
-const minConfidence = 0.5;
-const faceBoundaries = true;
-const videoRef = React.createRef();
-const canvasRef = React.createRef();
+const minConfidence = 0.5
+const faceBoundaries = true
+const videoRef = React.createRef()
+const canvasRef = React.createRef()
 
 function Room() {
-  const [faces, setFaces] = useState();
-  const [person, setPerson] = useState();
-  let params = useParams();
+  const [_faces, setFaces] = useState()
+  const [person, setPerson] = useState()
+  let params = useParams()
 
   const loadModelsAndAll = async () => {
     // Load all needed models
-    await faceapi.nets.ssdMobilenetv1.loadFromUri("/");
-    await faceapi.loadFaceLandmarkModel("/");
-    await faceapi.loadFaceExpressionModel("/");
+    await faceapi.nets.ssdMobilenetv1.loadFromUri('/')
+    await faceapi.loadFaceLandmarkModel('/')
+    await faceapi.loadFaceExpressionModel('/')
     // get webcam running
-    let stream;
+    let stream
     try {
       stream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
-          facingMode: "user",
+          facingMode: 'user',
         },
-      });
+      })
     } catch (err) {
       alert(
         "Sorry - Your Browser isn't allowing access to your webcam.  Try a different browser for this device?"
-      );
-      console.error("getUserMedia error", err);
+      )
+      console.error('getUserMedia error', err)
     }
-    videoRef.current.srcObject = stream;
+    videoRef.current.srcObject = stream
     // SORRY AGAIN
-    window.streamStorage = stream;
+    window.streamStorage = stream
     // hold until the camera loads
     return new Promise((resolve, _) => {
       videoRef.current.onloadedmetadata = () => {
         // Kick off right away
-        detectFaceStuff();
-        resolve();
-      };
-    });
-  };
+        detectFaceStuff()
+        resolve()
+      }
+    })
+  }
 
   const detectFaceStuff = async () => {
-    const videoEl = videoRef.current;
-    const canvas = canvasRef.current;
+    const videoEl = videoRef.current
+    const canvas = canvasRef.current
     const result = await faceapi
       .detectAllFaces(
         videoEl,
         new faceapi.SsdMobilenetv1Options({ minConfidence })
       )
-      .withFaceExpressions();
+      .withFaceExpressions()
     if (result && result.length > 0) {
       // Go turn all faces over minConfidence into strings
       const facialExpressions = result
@@ -68,9 +69,9 @@ function Room() {
           if (r.detection.score > minConfidence)
             return Object.keys(r.expressions).reduce((a, b) =>
               r.expressions[a] > r.expressions[b] ? a : b
-            );
+            )
         })
-        .toString();
+        .toString()
 
       // A person has been setup
       // DON'T YOU JUDGE ME FOR USING GLOBALS!
@@ -79,39 +80,39 @@ function Room() {
         //   `facialExpressions changed from ${window.faces} to ${facialExpressions} `
         // )
         // store local
-        window.faces = facialExpressions;
-        setFaces(facialExpressions);
+        window.faces = facialExpressions
+        setFaces(facialExpressions)
         // send to server
-        setEmotion(facialExpressions);
+        setEmotion(facialExpressions)
       }
 
       // Display visual results
       if (faceBoundaries) {
-        canvas.style.visibility = "visible";
-        const dims = faceapi.matchDimensions(canvas, videoEl, true);
-        const resizedResult = faceapi.resizeResults(result, dims);
-        faceapi.draw.drawDetections(canvas, resizedResult);
-        faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence);
+        canvas.style.visibility = 'visible'
+        const dims = faceapi.matchDimensions(canvas, videoEl, true)
+        const resizedResult = faceapi.resizeResults(result, dims)
+        faceapi.draw.drawDetections(canvas, resizedResult)
+        faceapi.draw.drawFaceExpressions(canvas, resizedResult, minConfidence)
       } else {
-        canvas.style.visibility = "hidden";
+        canvas.style.visibility = 'hidden'
       }
     }
 
     requestAnimationFrame(() => {
       // calm down when hidden!
       if (canvasRef.current) {
-        detectFaceStuff();
+        detectFaceStuff()
       }
-    });
-  };
+    })
+  }
 
-  async function createPerson(startEmotion = "neutral") {
+  async function createPerson(startEmotion = 'neutral') {
     const personResult = await API.graphql({
       query: createAudienceMember,
       variables: { input: { emotion: startEmotion, roomName: params.id } },
-    });
+    })
 
-    setPerson(personResult.data.createAudienceMember.id);
+    setPerson(personResult.data.createAudienceMember.id)
     // console.log('See that person data', personResult)
   }
 
@@ -120,43 +121,58 @@ function Room() {
     await API.graphql({
       query: updateAudienceMember,
       variables: { input: { id: person, emotion } },
-    });
+    })
 
-    API.graphql({
-      query: updateRoom,
-      variables: {
-        input: { id: params.id, lastUpdated: Date.now().toString() },
-      },
-    });
+    try {
+      await API.graphql({
+        query: updateRoom,
+        variables: {
+          input: { id: params.id, lastUpdated: Date.now().toString() },
+        },
+      })
+    } catch (e) {
+      // If the error is that a room doesn't exist - just create it!
+      if (
+        e.errors[0].errorType === 'DynamoDB:ConditionalCheckFailedException'
+      ) {
+        API.graphql({
+          query: createRoom,
+          variables: { input: { id: params.id, lastUpdated: Date.now() } },
+        })
+      }
+    }
   }
 
   useEffect(() => {
     if (person) {
-      loadModelsAndAll();
+      loadModelsAndAll()
     } else {
-      createPerson();
+      createPerson()
     }
 
     // clean up the audience member
     return () => {
       // Stop camera
-      window.streamStorage && window.streamStorage.getTracks()[0].stop();
-      // Delete person
-      API.graphql({
-        query: deleteAudienceMember,
-        variables: {
-          input: { id: person },
-        },
-      });
+      window.streamStorage && window.streamStorage.getTracks()[0].stop()
 
-      API.graphql({
-        query: updateRoom,
-        variables: {
-          input: { id: params.id, lastUpdated: Date.now().toString() },
-        },
-      });
-    };
-  }, [person]);
+      if (person) {
+        // Delete person
+        API.graphql({
+          query: deleteAudienceMember,
+          variables: {
+            input: { id: person },
+          },
+        })
+
+        API.graphql({
+          query: updateRoom,
+          variables: {
+            input: { id: params.id, lastUpdated: Date.now().toString() },
+          },
+        })
+      }
+    }
+  }, [person])
 
   return (
     <div>
@@ -202,7 +218,7 @@ function Room() {
         </p>
       </section>
     </div>
-  );
+  )
 }
 
-export default Room;
+export default Room
