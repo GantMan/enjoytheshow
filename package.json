@@ -12,7 +12,8 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "slugify": "^1.4.0"
+    "slugify": "^1.4.0",
+    "victory": "^34.3.8"
   },
   "scripts": {
     "start": "react-scripts start",
