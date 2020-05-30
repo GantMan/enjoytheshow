@@ -1,9 +1,9 @@
-import React, { useReducer, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import API from '@aws-amplify/api'
-import { onUpdateByRoomId } from './graphql/subscriptions'
-import { itemsByRoomName } from './graphql/queries'
-import { VictoryPie, VictoryTooltip } from 'victory'
+import React, { useReducer, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import API from "@aws-amplify/api";
+import { onUpdateByRoomId } from "./graphql/subscriptions";
+import { itemsByRoomName } from "./graphql/queries";
+import { VictoryPie, VictoryTooltip } from "victory";
 
 // const demoChart = [
 //   { x: 'Happy', y: 1 },
@@ -16,10 +16,10 @@ import { VictoryPie, VictoryTooltip } from 'victory'
 // ]
 
 class CustomLabel extends React.Component {
-  static defaultEvents = VictoryTooltip.defaultEvents
+  static defaultEvents = VictoryTooltip.defaultEvents;
   render() {
-    const { x, y, datum } = this.props
-    const cat = datum.y > 0 ? datum.x : ''
+    const { x, y, datum } = this.props;
+    const cat = datum.y > 0 ? datum.x : "";
     return (
       <g>
         <text
@@ -36,33 +36,33 @@ class CustomLabel extends React.Component {
           {...this.props}
           text={`${this.props.text}\n${this.props.datum.y}`}
           orientation="top"
-          flyoutStyle={{ fill: '#c33f38' }}
+          flyoutStyle={{ fill: "#c33f38" }}
         />
       </g>
-    )
+    );
   }
 }
 
 const initialState = {
   loading: true,
   roomEmotions: [],
-}
+};
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'SET_ROOM_EMOTIONS':
+    case "SET_ROOM_EMOTIONS":
       return {
         ...state,
         roomEmotions: action.roomEmotions,
         loading: false,
-      }
-    case 'SET_LOADING':
+      };
+    case "SET_LOADING":
       return {
         ...state,
         loading: action.loading,
-      }
+      };
     default:
-      return state
+      return state;
   }
 }
 
@@ -74,13 +74,13 @@ const EmptyMessage = (props) => {
           <h1>This Room is Empty</h1>
         </div>
       </div>
-    )
+    );
   }
-  return null
-}
+  return null;
+};
 
 const getFaceStats = (emotions) => {
-  const emoteArray = emotions.map((em) => em.emotion.split(','))
+  const emoteArray = emotions.map((em) => em.emotion.split(",")).flat();
   const fCount = emoteArray.reduce(
     (prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev),
     {
@@ -92,33 +92,33 @@ const getFaceStats = (emotions) => {
       disgusted: 0,
       surprised: 0,
     }
-  )
+  );
 
   const chart = [
-    { x: 'Happy', y: fCount.happy },
-    { x: 'Neutral', y: fCount.neutral },
-    { x: 'Surprised', y: fCount.surprised },
-    { x: 'Sad', y: fCount.sad },
-    { x: 'Fearful', y: fCount.fearful },
-    { x: 'Disgusted', y: fCount.disgusted },
-    { x: 'Angry', y: fCount.angry },
-  ]
+    { x: "Happy", y: fCount.happy },
+    { x: "Neutral", y: fCount.neutral },
+    { x: "Surprised", y: fCount.surprised },
+    { x: "Sad", y: fCount.sad },
+    { x: "Fearful", y: fCount.fearful },
+    { x: "Disgusted", y: fCount.disgusted },
+    { x: "Angry", y: fCount.angry },
+  ];
 
-  return { chart, total: emotions.length }
-}
+  return { chart, total: emoteArray.length };
+};
 
 function WatchRoom() {
-  let params = useParams()
-  const [state, dispatch] = useReducer(reducer, initialState)
-  let subscription
+  let params = useParams();
+  const [state, dispatch] = useReducer(reducer, initialState);
+  let subscription;
 
   useEffect(() => {
-    fetchRoomEmotions()
-    subscribe()
+    fetchRoomEmotions();
+    subscribe();
     return () => {
-      subscription && subscription.unsubscribe()
-    }
-  }, [])
+      subscription && subscription.unsubscribe();
+    };
+  }, []);
 
   async function fetchRoomEmotions() {
     let {
@@ -128,9 +128,9 @@ function WatchRoom() {
     } = await API.graphql({
       query: itemsByRoomName,
       variables: { roomName: params.id },
-    })
+    });
     // console.log("roomItems", roomItems)
-    dispatch({ type: 'SET_ROOM_EMOTIONS', roomEmotions: roomItems })
+    dispatch({ type: "SET_ROOM_EMOTIONS", roomEmotions: roomItems });
   }
 
   function subscribe() {
@@ -139,11 +139,12 @@ function WatchRoom() {
       variables: { id: params.id },
     }).subscribe({
       next: (apiData) => {
-        fetchRoomEmotions()
+        fetchRoomEmotions();
       },
-    })
+    });
   }
 
+  const faceStats = getFaceStats(state.roomEmotions);
   return (
     <div>
       <section className="room">
@@ -165,44 +166,42 @@ function WatchRoom() {
             duration: 200,
           }}
           style={{
-            labels: { fontWeight: 'bold', fontSize: 8, fill: 'white' },
+            labels: { fontWeight: "bold", fontSize: 8, fill: "white" },
           }}
           labelRadius={({ innerRadius }) => innerRadius + 100}
           labelComponent={<CustomLabel />}
           colorScale={[
-            '#295796',
-            '#864074',
-            '#a85eb3',
-            '#752fb4',
-            '#422eaf',
-            '#637dc2',
-            '#6b1d1e',
+            "#295796",
+            "#864074",
+            "#a85eb3",
+            "#752fb4",
+            "#422eaf",
+            "#637dc2",
+            "#6b1d1e",
           ]}
-          data={getFaceStats(state.roomEmotions).chart}
+          data={faceStats.chart}
           // data={demoChart}
         />
       </section>
-      <h3 class="roomReport">
-        There are {state.roomEmotions.length} people in the room
-      </h3>
+      <h3 class="roomReport">There are {faceStats.total} people in the room</h3>
       <hr />
       <section id="explainerSection">
         <h2>What is this?</h2>
-        <img src="/binoc.svg" id="explainWatch" />
+        <img src="/binoc.svg" id="explainWatch" alt="binoculars icon" />
         <p>
-          This page is watching the audience members in room{' '}
+          This page is watching the audience members in room{" "}
           <a href={`/room/${params.id}`}>{params.id}</a>. The emotions of the
           people in that room will be sent here in real-time. Share the room URL
           with your audience members.
         </p>
-        <h2>{window.location.href.replace('watch', 'room')}</h2>
+        <h2>{window.location.href.replace("watch", "room")}</h2>
         <p>
           If you'd like to create your own room or understand more about this
           project, <a href="/">visit the main page</a>.
         </p>
       </section>
     </div>
-  )
+  );
 }
 
-export default WatchRoom
+export default WatchRoom;
