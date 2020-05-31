@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import CreateRoom from "./CreateRoom";
 import JoinRoom from "./JoinRoom";
+import leaveRoom from "./lib/leaveRoom";
 
 function App() {
+  // Make sure we're not assigned to any rooms
+  useEffect(() => {
+    leaveRoom();
+  }, []);
+
   return (
     <div className="App">
       <section className="masthead" role="img" aria-label="Image Description">

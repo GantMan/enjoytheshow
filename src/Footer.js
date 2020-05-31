@@ -17,7 +17,7 @@ function Footer() {
       <div>
         <p>
           Created by{" "}
-          <a href="https://gantlaborde" target="_blank">
+          <a href="https://gantlaborde.com" target="_blank">
             Gant Laborde
           </a>
         </p>

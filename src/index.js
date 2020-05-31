@@ -6,8 +6,12 @@ import * as serviceWorker from "./serviceWorker";
 import Amplify from "@aws-amplify/core";
 import config from "./aws-exports";
 import Cookies from "js-cookie";
-import { createAudienceMember } from "./graphql/mutations";
+import {
+  createAudienceMember,
+  updateAudienceMember,
+} from "./graphql/mutations";
 import API from "@aws-amplify/api";
+import leaveRoom from "./lib/leaveRoom";
 
 Amplify.configure(config);
 
@@ -17,13 +21,13 @@ if (!Cookies.get("audience_id")) {
     query: createAudienceMember,
     variables: { input: { emotion: "unknown", roomName: "homeroombase" } },
   }).then((personResult) => {
-    // console.log(
-    //   "Setting audience_id to",
-    //   personResult.data.createAudienceMember.id
-    // );
+    // Set audience ID
     Cookies.set("audience_id", personResult.data.createAudienceMember.id);
   });
 }
+
+// Remove member on site exit
+window.addEventListener("beforeunload", leaveRoom);
 
 ReactDOM.render(
   <React.StrictMode>

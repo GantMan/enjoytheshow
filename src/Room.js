@@ -115,7 +115,8 @@ function Room() {
       setPerson(audienceID);
       setEmotion("unknown", { roomName: params.id, id: audienceID });
     } else {
-      await activatePerson();
+      // Keep trying every second until we have an ID
+      setTimeout(activatePerson, 1000);
     }
   }
 

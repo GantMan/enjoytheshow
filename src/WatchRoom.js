@@ -4,6 +4,7 @@ import API from "@aws-amplify/api";
 import { onUpdateByRoomId } from "./graphql/subscriptions";
 import { itemsByRoomName } from "./graphql/queries";
 import { VictoryPie, VictoryTooltip } from "victory";
+import leaveRoom from "./lib/leaveRoom";
 
 // const demoChart = [
 //   { x: 'Happy', y: 1 },
@@ -113,6 +114,7 @@ function WatchRoom() {
   let subscription;
 
   useEffect(() => {
+    leaveRoom();
     fetchRoomEmotions();
     subscribe();
     return () => {
