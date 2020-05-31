@@ -183,7 +183,9 @@ function WatchRoom() {
           // data={demoChart}
         />
       </section>
-      <h3 class="roomReport">There are {faceStats.total} people in the room</h3>
+      <h3 className="roomReport">
+        There are {faceStats.total} people in the room
+      </h3>
       <hr />
       <section id="explainerSection">
         <h2>What is this?</h2>

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
-  createAudienceMember,
   updateAudienceMember,
   createRoom,
   updateRoom,
-  deleteAudienceMember,
 } from "./graphql/mutations";
 import API from "@aws-amplify/api";
 import * as faceapi from "face-api.js";
+import Cookies from "js-cookie";
 
 const minConfidence = 0.5;
 const faceBoundaries = true;
@@ -41,7 +40,8 @@ function Room() {
       console.error("getUserMedia error", err);
     }
     videoRef.current.srcObject = stream;
-    // SORRY AGAIN
+    // Hanging the stream on a global, bc it kinda is a global
+    // fight me
     window.streamStorage = stream;
     // hold until the camera loads
     return new Promise((resolve, _) => {
@@ -73,20 +73,21 @@ function Room() {
         })
         .toString();
 
-      // A person has been setup
-      // DON'T YOU JUDGE ME FOR USING GLOBALS!
-      if (facialExpressions !== window.faces) {
-        // console.log(
-        //   `facialExpressions changed from ${window.faces} to ${facialExpressions} `
-        // )
-        // store local
-        window.faces = facialExpressions;
-        setFaces(facialExpressions);
-        // send to server
-        setEmotion(facialExpressions);
-      }
+      setFaces((oldFaces) => {
+        // Update if changed
+        if (facialExpressions !== oldFaces) {
+          // send to server
+          setEmotion(facialExpressions);
+          // update local
+          return facialExpressions;
+        } else {
+          // pass along old value, no need for server
+          return oldFaces;
+        }
+      });
 
       // Display visual results
+      // Might turn these off in the future, hence conditional
       if (faceBoundaries) {
         canvas.style.visibility = "visible";
         const dims = faceapi.matchDimensions(canvas, videoEl, true);
@@ -106,21 +107,23 @@ function Room() {
     });
   };
 
-  async function createPerson(startEmotion = "neutral") {
-    const personResult = await API.graphql({
-      query: createAudienceMember,
-      variables: { input: { emotion: startEmotion, roomName: params.id } },
-    });
-
-    setPerson(personResult.data.createAudienceMember.id);
-    // console.log('See that person data', personResult)
+  async function activatePerson() {
+    // Keep trying if there's a delay
+    const audienceID = Cookies.get("audience_id");
+    if (audienceID) {
+      // page now knows the ID
+      setPerson(audienceID);
+      setEmotion("unknown", { roomName: params.id, id: audienceID });
+    } else {
+      await activatePerson();
+    }
   }
 
-  async function setEmotion(emotion) {
+  async function setEmotion(emotion, extra = {}) {
     // console.log("setting emotion to " + emotion);
     await API.graphql({
       query: updateAudienceMember,
-      variables: { input: { id: person, emotion } },
+      variables: { input: { id: person, emotion, ...extra } },
     });
 
     try {
@@ -147,7 +150,7 @@ function Room() {
     if (person) {
       loadModelsAndAll();
     } else {
-      createPerson();
+      activatePerson();
     }
 
     // clean up the audience member
@@ -156,20 +159,9 @@ function Room() {
       window.streamStorage && window.streamStorage.getTracks()[0].stop();
 
       if (person) {
-        // Delete person
-        API.graphql({
-          query: deleteAudienceMember,
-          variables: {
-            input: { id: person },
-          },
-        });
-
-        API.graphql({
-          query: updateRoom,
-          variables: {
-            input: { id: params.id, lastUpdated: Date.now().toString() },
-          },
-        });
+        // Reassign to homeroom
+        console.log("cleanup called", person);
+        setEmotion("unknown", { roomName: "homeroombase" });
       }
     };
   }, [person]);
