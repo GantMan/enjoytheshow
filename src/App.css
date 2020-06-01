@@ -460,3 +460,17 @@ hr:after {
   margin-bottom: -2em;
   color: #c33f38;
 }
+
+.videoDemo {
+  width: 100%;
+  margin: 80px auto;
+}
+
+.videoDemo video {
+  width: 50%;
+  padding-bottom: 15px;
+}
+
+.videoDemo hr {
+  margin: 20px auto;
+}
