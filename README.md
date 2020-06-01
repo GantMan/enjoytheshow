@@ -1,11 +1,65 @@
 # Enjoying The Show
+
 ![Animated demo](_art/ets.gif)
 
 ## Real-time AI facial expression gathering with Amplify GraphQL and TensorFlow.js
-This app uses face-api to guage your facial expression, and then sends all faces in a particular URL or (room) to a "Watch" page.  The watch page summarizes all the faces to a single Victory Pie chart.
-![share card](public/twittercard.jpg)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This app uses face-api to guage your facial expression, and then sends all faces in a particular URL or (room) to a "Watch" page. The watch page summarizes all the faces to a single Victory Pie chart.
+
+## To deploy
+
+You can deploy this app and the back end infrastructure in one of two ways:
+
+1. The Amplify CLI
+2. One click deploy button
+
+### Amplify CLI
+
+1. First install and configure the Amplify CLI.
+
+> For a complete walkthrough of how to configure the CLI, see [this video](https://www.youtube.com/watch?v=fWbM5DLh25U)
+
+```sh
+$ npm install -g @aws-amplify/cli
+$ amplify configure
+```
+
+2. Clone the repo, install dependencies
+
+```sh
+$ git clone https://github.com/GantMan/enjoytheshow.git
+$ cd enjoytheshow
+$ npm install
+```
+
+3. Initialize the app
+
+```sh
+$ amplify init
+
+? Enter a name for the environment: dev (or your preferred env name)
+? Choose your default editor: (your preferred editor)
+? Do you want to use an AWS profile? Yes
+? Please choose the profile you want to use: your-profile-name
+
+? Do you want to configure Lambda Triggers for Cognito? No
+```
+
+4. Deploy the back end
+
+```sh
+$ amplify push --y
+```
+
+5. Run the app
+
+```sh
+$ npm start
+```
+
+### One click deploy
+
+[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/GantMan/enjoytheshow)
 
 ## Available Scripts
 
@@ -73,3 +127,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+![share card](public/twittercard.jpg)

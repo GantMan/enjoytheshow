@@ -253,6 +253,11 @@ button:focus {
   text-align: center;
 }
 
+#explainerSection p strong {
+  font-family: 'Montserrat', sans-serif;
+  color: #ee0048;
+}
+
 #explainerHeaderImage {
   width: 30% !important;
 }

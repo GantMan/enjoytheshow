@@ -37,9 +37,9 @@ function App() {
             AI. Any speaker can allocate a room URL for their audience, and
             regardless of the crowd being real or virtual, their webcams will
             share their dominant facial expression with the speaker in an
-            audience summary. This helps the speaker gauge the feedback from the
+            audience summary. This helps the speaker gauge feedback from the
             audience just as they would by looking out at the faces in the
-            audience themselves.
+            crowd.
           </p>
           <img src="/audience.svg" alt="audience chairs icon" />
           <div className="videoDemo">
@@ -49,19 +49,19 @@ function App() {
           </div>
 
           <p>
-            The Technology used for <strong>Enjoying The Show</strong> is
-            straight-forward. Each audience member's browser client runs the
-            webcam input through TensorFlow.js (via face-api) to identify the
-            sentiment of the person. The dominant sentiment out of{' '}
+            The Technology used for <strong>Enjoying The Show</strong> uses
+            elaborate tooling to complete a simple straight-forward task. Each
+            audience member's browser runs their webcam input through
+            TensorFlow.js (via face-api) to identify the emotional sentiment of
+            the person. The dominant detection out of{' '}
             <em>
               Happy, Neutral, Surprised, Sad, Fearful, Disgusted, and Angry,{' '}
             </em>
-            is identified and sent to an Amplify GraphQL server. The watch room
-            URL has a GraphQL subscription to the designated room, and updates
-            whenever a new audience member arrives/leaves or changes their
-            facial expression. Using Amplify + TensorFlow.js we are managing
-            real-time results of hundreds of client models with a single
-            dashboard.
+            is sent to an Amplify GraphQL server. <em>On the other side,</em>{' '}
+            the "watching room" URL has a GraphQL subscription and updates
+            whenever a new audience member arrives, leaves, or changes their
+            facial expression. Hundreds of client models can be managed an
+            displayed on the dashboard in real-time.
           </p>
 
           <img src="/hat.svg" alt="magic hat" />
