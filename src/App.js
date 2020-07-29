@@ -60,7 +60,7 @@ function App() {
             is sent to an Amplify GraphQL server. <em>On the other side,</em>{' '}
             the "watching room" URL has a GraphQL subscription and updates
             whenever a new audience member arrives, leaves, or changes their
-            facial expression. Hundreds of client models can be managed an
+            facial expression. Hundreds of client models can be managed and
             displayed on the dashboard in real-time.
           </p>
 
