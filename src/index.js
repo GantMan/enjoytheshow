@@ -6,10 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import Amplify from "@aws-amplify/core";
 import config from "./aws-exports";
 import Cookies from "js-cookie";
-import {
-  createAudienceMember,
-  updateAudienceMember,
-} from "./graphql/mutations";
+import { createAudienceMember } from "./graphql/mutations";
 import API from "@aws-amplify/api";
 import leaveRoom from "./lib/leaveRoom";
 

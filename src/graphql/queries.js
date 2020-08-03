@@ -7,6 +7,8 @@ export const getAudienceMember = /* GraphQL */ `
       id
       emotion
       roomName
+      updatedAt
+      createdAt
     }
   }
 `;
@@ -21,6 +23,8 @@ export const listAudienceMembers = /* GraphQL */ `
         id
         emotion
         roomName
+        updatedAt
+        createdAt
       }
       nextToken
     }
@@ -31,6 +35,8 @@ export const getRoom = /* GraphQL */ `
     getRoom(id: $id) {
       id
       lastUpdated
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -44,6 +50,8 @@ export const listRooms = /* GraphQL */ `
       items {
         id
         lastUpdated
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -68,6 +76,8 @@ export const itemsByRoomName = /* GraphQL */ `
         id
         emotion
         roomName
+        updatedAt
+        createdAt
       }
       nextToken
     }

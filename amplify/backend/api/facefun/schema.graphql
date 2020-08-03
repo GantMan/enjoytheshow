@@ -8,6 +8,8 @@ type AudienceMember
   id: ID!
   emotion: String!
   roomName: String!
+  # Access the dynamo DB auto-created times
+  updatedAt: AWSDateTime
 }
 
 type Subscription {

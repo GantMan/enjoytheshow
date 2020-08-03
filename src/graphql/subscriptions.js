@@ -7,6 +7,8 @@ export const onUpdateById = /* GraphQL */ `
       id
       emotion
       roomName
+      updatedAt
+      createdAt
     }
   }
 `;
@@ -15,6 +17,8 @@ export const onUpdateByRoomId = /* GraphQL */ `
     onUpdateByRoomId(id: $id) {
       id
       lastUpdated
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -24,6 +28,8 @@ export const onCreateAudienceMember = /* GraphQL */ `
       id
       emotion
       roomName
+      updatedAt
+      createdAt
     }
   }
 `;
@@ -33,6 +39,8 @@ export const onUpdateAudienceMember = /* GraphQL */ `
       id
       emotion
       roomName
+      updatedAt
+      createdAt
     }
   }
 `;
@@ -42,6 +50,8 @@ export const onDeleteAudienceMember = /* GraphQL */ `
       id
       emotion
       roomName
+      updatedAt
+      createdAt
     }
   }
 `;
@@ -50,6 +60,8 @@ export const onCreateRoom = /* GraphQL */ `
     onCreateRoom {
       id
       lastUpdated
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -58,6 +70,8 @@ export const onUpdateRoom = /* GraphQL */ `
     onUpdateRoom {
       id
       lastUpdated
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -66,6 +80,8 @@ export const onDeleteRoom = /* GraphQL */ `
     onDeleteRoom {
       id
       lastUpdated
+      createdAt
+      updatedAt
     }
   }
 `;
