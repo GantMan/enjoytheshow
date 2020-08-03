@@ -10,6 +10,8 @@ export const createAudienceMember = /* GraphQL */ `
       id
       emotion
       roomName
+      updatedAt
+      createdAt
     }
   }
 `;
@@ -22,6 +24,8 @@ export const updateAudienceMember = /* GraphQL */ `
       id
       emotion
       roomName
+      updatedAt
+      createdAt
     }
   }
 `;
@@ -34,6 +38,8 @@ export const deleteAudienceMember = /* GraphQL */ `
       id
       emotion
       roomName
+      updatedAt
+      createdAt
     }
   }
 `;
@@ -45,6 +51,8 @@ export const createRoom = /* GraphQL */ `
     createRoom(input: $input, condition: $condition) {
       id
       lastUpdated
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -56,6 +64,8 @@ export const updateRoom = /* GraphQL */ `
     updateRoom(input: $input, condition: $condition) {
       id
       lastUpdated
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -67,6 +77,8 @@ export const deleteRoom = /* GraphQL */ `
     deleteRoom(input: $input, condition: $condition) {
       id
       lastUpdated
+      createdAt
+      updatedAt
     }
   }
 `;
