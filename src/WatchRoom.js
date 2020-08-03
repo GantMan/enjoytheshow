@@ -123,13 +123,27 @@ function WatchRoom() {
   }, []);
 
   async function fetchRoomEmotions() {
+    // Only show faces updated in the past howManyMins
+    // this helps people who exited their browser
+    // but no final API call was made to clear them
+    const howManyMins = 5;
+    const past = new Date(Date.now() - 60000 * howManyMins);
+    const searchSpec = {
+      roomName: params.id,
+      filter: {
+        updatedAt: {
+          gt: past.toISOString(),
+        },
+      },
+    };
+
     let {
       data: {
         itemsByRoomName: { items: roomItems },
       },
     } = await API.graphql({
       query: itemsByRoomName,
-      variables: { roomName: params.id },
+      variables: searchSpec,
     });
     // console.log("roomItems", roomItems)
     dispatch({ type: "SET_ROOM_EMOTIONS", roomEmotions: roomItems });
