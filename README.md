@@ -4,7 +4,7 @@
 
 ## Real-time AI facial expression gathering with Amplify GraphQL and TensorFlow.js
 
-This app uses face-api to guage your facial expression, and then sends all faces in a particular URL or (room) to a "Watch" page. The watch page summarizes all the faces to a single Victory Pie chart.
+This app uses face-api to gauge your facial expression, and then sends all faces in a particular URL or (room) to a "Watch" page. The watch page summarizes all the faces to a single Victory Pie chart.
 
 ## To deploy
 
