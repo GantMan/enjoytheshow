@@ -21,9 +21,9 @@ function Room() {
 
   const loadModelsAndAll = async () => {
     // Load all needed models
-    await faceapi.nets.ssdMobilenetv1.loadFromUri("/");
-    await faceapi.loadFaceLandmarkModel("/");
-    await faceapi.loadFaceExpressionModel("/");
+    await faceapi.nets.ssdMobilenetv1.loadFromUri("https://s3.amazonaws.com/ir_public/ai/facefun/public/");
+    await faceapi.loadFaceLandmarkModel("https://s3.amazonaws.com/ir_public/ai/facefun/public/");
+    await faceapi.loadFaceExpressionModel("https://s3.amazonaws.com/ir_public/ai/facefun/public/");
     // get webcam running
     let stream;
     try {
