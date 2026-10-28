@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import CreateRoom from './CreateRoom'
 import JoinRoom from './JoinRoom'
 import DemoVideo from './DemoVideo'
+import faq, { faqJsonLd } from './faq'
 
 const TALK_ID = 'GskMuu821NI'
 
@@ -90,6 +91,20 @@ function App() {
             facial expression. Hundreds of client models can be managed and
             displayed on the dashboard in real-time.
           </p>
+
+          <section className="faq" aria-labelledby="faq-title">
+            <h2 id="faq-title">Questions</h2>
+            {faq.map(({ q, a }) => (
+              <details key={q}>
+                <summary>{q}</summary>
+                <p>{a}</p>
+              </details>
+            ))}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+            />
+          </section>
 
           <section className="talk" aria-labelledby="talk-title">
             <h2 id="talk-title">Watch the talk</h2>
