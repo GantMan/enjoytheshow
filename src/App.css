@@ -546,6 +546,34 @@ code {
   padding: 0 1em;
 }
 
+.faq {
+  max-width: 46em;
+  margin: 3em auto;
+  padding: 0 1em;
+  text-align: left;
+}
+
+.faq details {
+  border-bottom: 1px solid #4d1a1a;
+  padding: 0.9em 0;
+}
+
+.faq summary {
+  cursor: pointer;
+  font-size: 1.3em;
+  color: #fff;
+}
+
+.faq summary::marker {
+  color: #ee0048;
+}
+
+#explainerSection .faq p {
+  padding: 0.5em 0 0;
+  font-size: 1.2em;
+  color: #d9c6c6;
+}
+
 @media (max-width: 800px) {
   .masthead {
     background: radial-gradient(

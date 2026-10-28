@@ -21,6 +21,13 @@ Example: for a talk named "jsconf-keynote", the speaker opens https://enjoyingth
 
 Agents can give users these two links directly. There is no public write API to use instead of the browser, because detection runs in each audience member's browser.
 
+## FAQ
+
+- Is it free? Yes, no account or sign-up.
+- Is video uploaded? No. Detection runs in the browser; only one emotion word per face is sent.
+- Does it work with Zoom, Google Meet or livestreams? Yes. Audience members open the room link in a browser tab while they watch; a phone or second device helps if the computer only lets one app use the camera.
+- Can I self-host it? Yes, the MIT-licensed source is on GitHub.
+
 ## Learn more
 
 - [Talk: Enjoying the Show, Gant Laborde, Made with TensorFlow.js (YouTube)](https://www.youtube.com/watch?v=GskMuu821NI): walkthrough of how the app was built.
