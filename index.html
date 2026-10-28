@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Enjoying The Show | Real-time AI Audience Emotion Tracking</title>
+    <meta
+      name="description"
+      content="Free tool for speakers: see your virtual or live audience's facial expressions as a real-time emotion chart. Runs TensorFlow.js in the browser; video never leaves the device. By Gant Laborde."
+    />
+    <link rel="canonical" href="https://enjoyingthe.show/" />
+    <meta name="author" content="Gant Laborde" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#1d0000" />
+    <meta name="color-scheme" content="dark" />
+    <script>
+      // Hide the prerendered homepage on other routes until the app mounts
+      if (location.pathname !== '/') document.documentElement.classList.add('spa-route')
+    </script>
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ee0048" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+
+    <!-- For LLMs and agents: plain-text site guide -->
+    <link rel="alternate" type="text/markdown" title="llms.txt" href="/llms.txt" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <!-- Open Graph / social cards -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Enjoying The Show" />
+    <meta property="og:url" content="https://enjoyingthe.show/" />
+    <meta property="og:title" content="Enjoying The Show: Virtual Audience Emotion Tracking with AI" />
+    <meta
+      property="og:description"
+      content="Use TensorFlow.js and AWS AppSync to get a real-time aggregation of your audience's facial expressions. Create a room, share the link, and watch the crowd react."
+    />
+    <meta property="og:image" content="https://enjoyingthe.show/twittercard.jpg" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="754" />
+    <meta property="og:image:alt" content="Theatre flourish with the words Enjoying the Show" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@GantLaborde" />
+    <meta name="twitter:creator" content="@GantLaborde" />
+    <meta name="twitter:title" content="Enjoying The Show: Virtual Audience Emotion Tracking with AI" />
+    <meta
+      name="twitter:description"
+      content="Real-time aggregation of your audience's facial expressions with TensorFlow.js. Create a room, share the link, watch the crowd react. By Gant Laborde."
+    />
+    <meta name="twitter:image" content="https://enjoyingthe.show/twittercard.jpg" />
+    <meta name="twitter:image:alt" content="Theatre flourish with the words Enjoying the Show" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://enjoyingthe.show/#website",
+            "url": "https://enjoyingthe.show/",
+            "name": "Enjoying The Show",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://infinite.red/#org" }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://enjoyingthe.show/#app",
+            "name": "Enjoying The Show",
+            "url": "https://enjoyingthe.show/",
+            "description": "Real-time AI audience emotion tracking. Audience members open a room link; TensorFlow.js detects their dominant facial expression in the browser and the speaker's watch page shows a live emotion chart for the whole room.",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Any (modern web browser with webcam)",
+            "browserRequirements": "Requires JavaScript, WebGL and camera access",
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "featureList": [
+              "Create a room and watch a live pie chart of audience emotions",
+              "Detects happy, neutral, surprised, sad, fearful, disgusted and angry",
+              "In-browser face detection with TensorFlow.js; video never leaves the device",
+              "Real-time updates via AWS AppSync GraphQL subscriptions"
+            ],
+            "screenshot": "https://enjoyingthe.show/twittercard.jpg",
+            "author": { "@id": "https://gantlaborde.com/#person" },
+            "sameAs": ["https://github.com/GantMan/enjoytheshow"],
+            "potentialAction": [
+              {
+                "@type": "ViewAction",
+                "name": "Watch a room's live emotion chart",
+                "target": "https://enjoyingthe.show/watch/{room_name}"
+              },
+              {
+                "@type": "JoinAction",
+                "name": "Join a room as an audience member",
+                "target": "https://enjoyingthe.show/room/{room_name}"
+              }
+            ]
+          },
+          {
+            "@type": "VideoObject",
+            "name": "Enjoying the show - Gant Laborde - Made with TensorFlow.js",
+            "description": "Gant Laborde shows how Enjoying The Show uses TensorFlow.js and AWS Amplify to track a virtual audience's facial expressions in real time.",
+            "thumbnailUrl": "https://i.ytimg.com/vi/GskMuu821NI/hqdefault.jpg",
+            "embedUrl": "https://www.youtube.com/embed/GskMuu821NI",
+            "contentUrl": "https://www.youtube.com/watch?v=GskMuu821NI",
+            "uploadDate": "2020-09-23T11:01:47-07:00",
+            "publisher": { "@type": "Organization", "name": "TensorFlow", "url": "https://www.youtube.com/@TensorFlow" },
+            "about": { "@id": "https://enjoyingthe.show/#app" }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://gantlaborde.com/#person",
+            "name": "Gant Laborde",
+            "url": "https://gantlaborde.com",
+            "sameAs": ["https://x.com/GantLaborde", "https://github.com/GantMan"],
+            "worksFor": { "@id": "https://infinite.red/#org" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://infinite.red/#org",
+            "name": "Infinite Red",
+            "url": "https://infinite.red"
+          }
+        ]
+      }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Roboto+Condensed&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <noscript>
+      Enjoying The Show needs JavaScript and a webcam to detect expressions. Read
+      <a href="/llms.txt">how it works</a>.
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

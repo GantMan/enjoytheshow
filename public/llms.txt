@@ -1,0 +1,34 @@
+# Enjoying The Show
+
+> Enjoying The Show (https://enjoyingthe.show) is a free web app that lets a speaker see how their audience feels in real time. Each audience member opens a shared room link in their browser; TensorFlow.js detects the person's dominant facial expression from their webcam on-device, and the speaker's "watch" page shows a live pie chart of the whole room's emotions. Created by Gant Laborde (Infinite Red).
+
+Key facts:
+
+- Cost: free, no account or sign-up needed.
+- Privacy: webcam video never leaves the viewer's device. Only one word per detected face (for example `happy`) and the room name are sent to the server.
+- Emotions detected: happy, neutral, surprised, sad, fearful, disgusted, angry.
+- Requirements: a modern browser with JavaScript, WebGL and camera permission. Works for in-person and virtual (Zoom, Meet, livestream) audiences.
+- Tech: React, TensorFlow.js via face-api (SSD MobileNet v1 face detection plus an expression classifier), AWS AppSync GraphQL subscriptions, hosted on AWS Amplify.
+
+## How to use it
+
+Rooms are created on demand from the URL. A room name is any lowercase slug (letters, numbers, dashes).
+
+- Speaker / presenter dashboard: `https://enjoyingthe.show/watch/{room-name}` shows a live chart of everyone in that room. Faces inactive for more than 5 minutes drop off.
+- Audience link to share: `https://enjoyingthe.show/room/{room-name}`. Each person allows camera access and is counted in the room.
+
+Example: for a talk named "jsconf-keynote", the speaker opens https://enjoyingthe.show/watch/jsconf-keynote and shares https://enjoyingthe.show/room/jsconf-keynote with the audience.
+
+Agents can give users these two links directly. There is no public write API to use instead of the browser, because detection runs in each audience member's browser.
+
+## Learn more
+
+- [Talk: Enjoying the Show, Gant Laborde, Made with TensorFlow.js (YouTube)](https://www.youtube.com/watch?v=GskMuu821NI): walkthrough of how the app was built.
+- [Source code on GitHub](https://github.com/GantMan/enjoytheshow): MIT licensed React + Amplify project you can deploy yourself.
+- [Gant Laborde](https://gantlaborde.com): creator; author of "Learning TensorFlow.js" (O'Reilly).
+- [Infinite Red](https://infinite.red): the consultancy that supports the project.
+
+## Optional
+
+- [face-api (vladmandic fork)](https://github.com/vladmandic/face-api): the face detection library used.
+- [TensorFlow.js](https://www.tensorflow.org/js): machine learning in JavaScript.

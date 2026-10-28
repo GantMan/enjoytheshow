@@ -1,3 +1,6 @@
-# https://www.robotstxt.org/robotstxt.html
+# Enjoying The Show welcomes search engines, AI crawlers and agents.
+# Room pages are per-event and marked noindex.
 User-agent: *
-Disallow:
+Allow: /
+
+Sitemap: https://enjoyingthe.show/sitemap.xml

@@ -6,126 +6,48 @@
 
 This app uses face-api to gauge your facial expression, and then sends all faces in a particular URL or (room) to a "Watch" page. The watch page summarizes all the faces to a single Victory Pie chart.
 
-## To deploy
+**Live at [enjoyingthe.show](https://enjoyingthe.show)** · [Watch the talk on YouTube](https://www.youtube.com/watch?v=GskMuu821NI)
 
-You can deploy this app and the back end infrastructure in one of two ways:
+## How to use it
 
-1. The Amplify CLI
-2. One click deploy button
+- **Speaker:** open `https://enjoyingthe.show/watch/<room-name>` for a live pie chart of the room's mood.
+- **Audience:** share `https://enjoyingthe.show/room/<room-name>`. Each person allows webcam access; expressions are detected in their browser and only the emotion word is sent.
 
-### Amplify CLI
+## Stack
 
-1. First install and configure the Amplify CLI.
+- React 19 + React Router, built with [Vite](https://vite.dev). The homepage is prerendered at build time (`scripts/prerender.js`) so search engines and LLM agents see real content without running JavaScript.
+- [@vladmandic/face-api](https://github.com/vladmandic/face-api) (TensorFlow.js) for face detection + expressions, lazy-loaded only on `/room/*`. Model weights are served from `public/`.
+- AWS AppSync GraphQL (API key auth) + DynamoDB, originally created with Amplify Gen 1 (`amplify/` holds the schema), hosted on AWS Amplify Hosting.
+- `public/llms.txt`, `sitemap.xml`, JSON-LD structured data and Open Graph tags for discoverability.
 
-> For a complete walkthrough of how to configure the CLI, see [this video](https://www.youtube.com/watch?v=fWbM5DLh25U)
-
-```sh
-$ npm install -g @aws-amplify/cli
-$ amplify configure
-```
-
-2. Clone the repo, install dependencies
+## Develop
 
 ```sh
-$ git clone https://github.com/GantMan/enjoytheshow.git
-$ cd enjoytheshow
-$ npm install
+npm install
+npm run dev     # http://localhost:3000
+npm test
+npm run build   # outputs dist/ with the prerendered homepage
 ```
 
-3. Initialize the app
+## Deploy
+
+Amplify Hosting builds every push to `master` using `amplify.yml` (frontend only: `npm ci && npm run build`, publishing `dist/`). The backend is already deployed and is no longer pushed from CI.
+
+Single-page-app rewrites live in the Amplify console: everything that isn't a static file rewrites to `/index.html` (200).
+
+### The AppSync API key
+
+The site authenticates to AppSync with a public API key (`src/aws-exports.js`). AppSync keys expire after at most 365 days, which is what took the site down in 2023. `infra/renew-api-key.sh` installs a small Lambda plus a monthly EventBridge rule that keeps pushing the key's expiry out a year. Re-run it from AWS CloudShell any time; it is idempotent.
+
+If the key ever does lapse, create a new one and update `src/aws-exports.js`:
 
 ```sh
-$ amplify init
-
-? Enter a name for the environment: dev (or your preferred env name)
-? Choose your default editor: (your preferred editor)
-? Do you want to use an AWS profile? Yes
-? Please choose the profile you want to use: your-profile-name
-
-? Do you want to configure Lambda Triggers for Cognito? No
+aws appsync create-api-key --api-id f6gwcwcbmbazflkwwr3h6uypne \
+  --expires $(( ($(date +%s) + 364*86400) / 3600 * 3600 ))
 ```
 
-4. Deploy the back end
+### Your own copy
 
-```sh
-$ amplify push --y
-```
-
-5. Run the app
-
-```sh
-$ npm start
-```
-
-### One click deploy
-
-[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/GantMan/enjoytheshow)
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+To stand up your own backend, install the Amplify CLI (`npm i -g @aws-amplify/cli`), run `amplify init` and `amplify push` to create the AppSync API from `amplify/backend/api/facefun/schema.graphql`, then point `src/aws-exports.js` at it.
 
 ![share card](public/twittercard.jpg)
