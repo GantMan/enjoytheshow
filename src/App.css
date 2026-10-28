@@ -55,40 +55,6 @@ a:visited {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #ee0048;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
 .masthead {
   display: flex;
@@ -107,7 +73,7 @@ a:visited {
       rgba(0, 0, 0, 0) 35%,
       rgba(0, 0, 0, 0.65) 100%
     ),
-    url(enjoyingtheshow.jpg) no-repeat center center scroll;
+    url('./assets/hero-1920.webp') no-repeat center center scroll;
 }
 
 .masthead h1 {
@@ -126,7 +92,8 @@ a:visited {
   padding-bottom: 0.2em;
 }
 
-button {
+button,
+.button {
   background: #ee0048;
   transition: background ease 0.25s;
   border-radius: 5px;
@@ -143,10 +110,12 @@ button {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
-button:hover {
+button:hover,
+.button:hover {
   background: #ff2566;
 }
-button:focus {
+button:focus-visible,
+.button:focus-visible {
   outline: 1px solid #fff;
   outline-offset: -4px;
 }
@@ -478,4 +447,162 @@ hr:after {
 
 .videoDemo hr {
   margin: 20px auto;
+}
+
+.button {
+  display: inline-block;
+  color: #fff !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Prerendered homepage markup stays hidden on other routes until React mounts */
+.spa-route #root {
+  visibility: hidden;
+}
+
+.tagline {
+  margin: 0 0 1.5em;
+  padding: 0 1em;
+  font-size: 1.25em;
+  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.loading,
+.status {
+  color: #9b9b9b;
+  font-size: 1.2em;
+  min-height: 1.5em;
+}
+
+.steps {
+  max-width: 46em;
+  margin: 0 auto 2em;
+  padding: 0 3em;
+  text-align: left;
+  font-size: 1.3em;
+  line-height: 1.5;
+}
+
+.steps li {
+  margin-bottom: 0.75em;
+}
+
+code {
+  color: #ffb3c7;
+  word-break: break-all;
+}
+
+.talk {
+  margin: 3em auto;
+  max-width: 640px;
+}
+
+.talkThumb {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+#explainerSection .talkThumb img {
+  width: 100%;
+  height: auto;
+  border: 2px solid #c33f38;
+  border-radius: 6px;
+}
+
+.talkThumb .play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ee0048;
+  color: #fff;
+  border-radius: 12px;
+  padding: 0.2em 0.7em;
+  font-size: 2.5em;
+  transition: background ease 0.25s;
+}
+
+.talkThumb:hover .play {
+  background: #ff2566;
+}
+
+.videoDemo video {
+  height: auto;
+  aspect-ratio: auto 1920 / 691;
+  background: #000;
+}
+
+.shareUrl {
+  word-break: break-all;
+  padding: 0 1em;
+}
+
+@media (max-width: 800px) {
+  .masthead {
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.65) 100%
+      ),
+      url('./assets/hero-960.webp') no-repeat center center scroll;
+  }
+
+  .navigateRooms {
+    flex-direction: column;
+    align-items: center;
+    gap: 3em;
+  }
+
+  .roomBox {
+    width: 80%;
+  }
+
+  .flourish {
+    width: 80%;
+  }
+
+  .explainer {
+    font-size: 2.2em;
+    margin-top: -40px;
+  }
+
+  #explainerSection p,
+  .steps {
+    padding: 0.5em 1em;
+    font-size: 1.15em;
+  }
+
+  #explainerSection img {
+    width: 25%;
+  }
+
+  .videoDemo video,
+  #captureContainer {
+    width: 92%;
+  }
+
+  hr {
+    margin: 60px auto;
+  }
+
+  .footer {
+    font-size: 0.85em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masthead h1,
+  .bb::before,
+  .bb::after {
+    animation: none;
+  }
 }
